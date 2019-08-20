@@ -7,7 +7,7 @@ node('maven') {
  stage('Build Image') {
     unstash name:"jar"
     sh "oc start-build cart --from-file=target/cart-1.0.jar --follow"
-  }1.0.0-SNAPSHOT
+  }
   stage('Deploy') {
     openshiftDeploy depCfg: 'cart'
     openshiftVerifyDeployment depCfg: 'cart', replicaCount: 1, verifyReplicaCount: true
