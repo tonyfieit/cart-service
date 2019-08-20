@@ -2,15 +2,15 @@ node('maven') {
   stage('Build') {
     git url: "https://github.com/tonyfieit/cart-service.git"
     sh "mvn package"
-    stash name:"jar", includes:"target/cart.jar"
+    stash name:"jar", includes:"target/cart.1.0.0-SNAPSHOT.1.0.0-SNAPSHOT.jar"
   }
  stage('Build Image') {
     unstash name:"jar"
-    sh "oc start-build cart --from-file=target/cart.jar --follow"
-  }
+    sh "oc start-build cart --from-file=target/cart.1.0.0-SNAPSHOT.jar --follow"
+  }1.0.0-SNAPSHOT
   stage('Deploy') {
-    openshiftDeploy depCfg: 'cartapp'
-    openshiftVerifyDeployment depCfg: 'cartapp', replicaCount: 1, verifyReplicaCount: true
+    openshiftDeploy depCfg: 'cart'
+    openshiftVerifyDeployment depCfg: 'cart', replicaCount: 1, verifyReplicaCount: true
   }
   stage('System Test') {
     sh "curl -s -X POST http://cart:8080/api/cart/dummy/666/1"
