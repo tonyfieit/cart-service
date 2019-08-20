@@ -2,11 +2,11 @@ node('maven') {
   stage('Build') {
     git url: "https://github.com/tonyfieit/cart-service.git"
     sh "mvn package"
-    stash name:"jar", includes:"target/cart-1.0.jar"
+    stash name:"jar", includes:"target/cart.jar"
   }
  stage('Build Image') {
     unstash name:"jar"
-    sh "oc start-build cart --from-file=target/cart-1.0.jar --follow"
+    sh "oc start-build cart --from-file=target/cart.jar --follow"
   }
   stage('Deploy') {
     openshiftDeploy depCfg: 'cart'
