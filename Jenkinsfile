@@ -16,7 +16,7 @@ node('maven') {
   }
   stage('Build Image') {
     unstash name:"jar"
-    sh "oc start-build cart-service-pipeline --from-file=target/cart.jar --follow"
+    sh "oc start-build cart --from-file=target/cart.jar --follow"
   }
   stage('Deploy') {
     openshiftDeploy depCfg: 'cart'
