@@ -4,17 +4,7 @@ node('maven') {
     sh "mvn package"
     stash name:"jar", includes:"target/cart.jar"
   }
-  stage('Test') {
-    parallel(
-      "Cart Tests": {
-        sh "mvn verify -P cart-tests"
-      },
-      "Discount Tests": {
-        sh "mvn verify -P discount-tests"
-      }
-    )
-  }
-  stage('Build Image') {
+ stage('Build Image') {
     unstash name:"jar"
     sh "oc start-build cart --from-file=target/cart.jar --follow"
   }
